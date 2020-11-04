@@ -6,6 +6,7 @@ const app = express();
 app.use(cors());
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 const welcomeMessage = {
 	id: 0,
@@ -56,7 +57,7 @@ app.get("/messages/search", function (req, res) {
 //add a message
 app.post("/messages", function (request, response) {
 	let newMessage = request.body;
-	console.log(newMessage);
+	
 	if (
 		typeof newMessage.text == "string" &&
 		newMessage.text.length > 0 &&
@@ -84,9 +85,9 @@ app.delete("/messages/deleteMessage/:id", function (request, response) {
 	messages = messages.filter((m) => m.id != messageId);
 	response.json("message deleted");
 });
-
-app.listen(3030, () => {
-	console.log(`Server is listening on port 3030. Ready to accept requests!`);
+let port= process.env.PORT|| 3001;
+app.listen(port, () => {
+	console.log(`Server is listening on ${ port} . Ready to accept requests!`);
 });
 //process.env.PORT
 /*const listener = app.listen(process.env.PORT, () => {
